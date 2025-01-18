@@ -88,6 +88,8 @@ def run_q(episodes, is_training=True, render=False):
     for t in range(episodes):
         sum_steps[t] = np.mean(steps_per_episode[max(0, t - 100):(t + 1)])  # Среднее по последним 100 эпизодам
     plt.plot(sum_steps)
+    plt.xlabel('Episodes')
+    plt.ylabel('number of steps')
     plt.savefig('v0_delivery_solution.png')
 
     if is_training:
@@ -108,7 +110,7 @@ def train_sb3():
     # Используем алгоритм Advantage Actor Critic (A2C) из StableBaseline3
     model = A2C('MlpPolicy', env, verbose=1, device='cuda', tensorboard_log=log_dir)
 
-    TIMESTEPS = 1000  # Количество шагов на итерацию обучения
+    TIMESTEPS = 500  # Количество шагов на итерацию обучения
     iters = 0
     while True:
         iters += 1
@@ -139,9 +141,9 @@ def test_sb3(render=True):
 # Основная точка входа
 if __name__ == '__main__':
     # Обучение и тестирование с использованием Q-Learning
-    # run_q(1000, is_training=True, render=False)
-    # run_q(1, is_training=False, render=True)
+    run_q(500, is_training=True, render=False)
+    run_q(1, is_training=False, render=True)
 
     # Обучение и тестирование с использованием StableBaseline3
     # train_sb3()
-    test_sb3()
+    # test_sb3()
